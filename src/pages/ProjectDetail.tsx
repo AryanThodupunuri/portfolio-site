@@ -50,38 +50,63 @@ const ProjectDetail = () => {
   const project = id ? projectDetails[id] : null;
 
   if (!project) {
-    return <div className="text-center py-8">Project not found</div>;
+    return (
+      <main className="flex-1 flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <p className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Project not found</p>
+          <Link to="/projects" className="btn-primary">← Back to Projects</Link>
+        </div>
+      </main>
+    );
   }
 
   return (
-    <main className="flex-1 container mx-auto px-4 py-8">
-      <Link to="/projects" className="text-blue-600 dark:text-blue-400 hover:underline mb-4 inline-block">
-        ← Back to Projects
-      </Link>
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
-        {project.title}
-      </h1>
-      <div className="space-y-6">
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Problem</h2>
-          <p className="text-gray-600 dark:text-gray-300">{project.problem}</p>
-        </section>
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Solution</h2>
-          <p className="text-gray-600 dark:text-gray-300">{project.solution}</p>
-        </section>
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Tech Stack</h2>
-          <ul className="list-disc list-inside text-gray-600 dark:text-gray-300">
-            {project.techStack.map((tech: string) => (
-              <li key={tech}>{tech}</li>
-            ))}
-          </ul>
-        </section>
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Architecture</h2>
-          <p className="text-gray-600 dark:text-gray-300">{project.architecture}</p>
-        </section>
+    <main className="flex-1 bg-white dark:bg-gray-950 min-h-screen">
+      <div className="container mx-auto px-4 py-16 max-w-3xl">
+        {/* Breadcrumb */}
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-10"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Projects
+        </Link>
+
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-10">{project.title}</h1>
+
+        <div className="space-y-10">
+          <section>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-indigo-500 dark:text-indigo-400 mb-3">Problem</h2>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{project.problem}</p>
+          </section>
+
+          <div className="border-t border-gray-100 dark:border-gray-800" />
+
+          <section>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-indigo-500 dark:text-indigo-400 mb-3">Solution</h2>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{project.solution}</p>
+          </section>
+
+          <div className="border-t border-gray-100 dark:border-gray-800" />
+
+          <section>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-indigo-500 dark:text-indigo-400 mb-4">Tech Stack</h2>
+            <div className="flex flex-wrap gap-2">
+              {project.techStack.map((tech: string) => (
+                <span key={tech} className="badge">{tech}</span>
+              ))}
+            </div>
+          </section>
+
+          <div className="border-t border-gray-100 dark:border-gray-800" />
+
+          <section>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-indigo-500 dark:text-indigo-400 mb-3">Architecture</h2>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{project.architecture}</p>
+          </section>
+        </div>
       </div>
     </main>
   );

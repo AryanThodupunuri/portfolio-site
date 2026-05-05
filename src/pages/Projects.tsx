@@ -4,67 +4,94 @@ const projects = [
   {
     id: 'coursecompass',
     title: 'CourseCompass',
-    description: 'A full-stack distributed system and Manifest V3 Chrome Extension built with Java, Spring Boot, React, and PostgreSQL. Engineered a high-concurrency API to eliminate information asymmetry for 25,000+ UVA students, deployed via Docker.',
-    image: '/project1.jpg', // placeholder
+    description: 'Full-stack distributed system and Manifest V3 Chrome Extension built with Java, Spring Boot, React, and PostgreSQL. Engineered a high-concurrency API for 25,000+ UVA students.',
+    tags: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'Docker'],
+    github: 'https://github.com/AryanThodupunuri/coursecompass',
   },
   {
     id: 'aws-landing-zone',
     title: 'AWS Landing Zone',
-    description: 'A modular AWS Landing Zone built with Terraform. Designed with VPC/IAM/CloudTrail guardrails, automated CI for security scans, and Terratest implementation for plan-only validation.',
-    image: '/project2.jpg',
+    description: 'Modular AWS Landing Zone built with Terraform. VPC/IAM/CloudTrail guardrails, automated CI security scans, and Terratest plan-only validation.',
+    tags: ['Terraform', 'AWS', 'HCL', 'CI/CD'],
+    github: 'https://github.com/AryanThodupunuri/aws-landing-zone',
   },
   {
     id: 'extreme-weather-classification',
     title: 'Extreme Weather Classification',
-    description: 'An HPC-accelerated computer vision pipeline utilizing PyTorch and OpenCV. Compares CNN architectures (EfficientNetV2/MobileNetV2) to detect catastrophic weather events, using Grad-CAM for Explainable AI.',
-    image: '/project3.jpg',
+    description: 'HPC-accelerated computer vision pipeline with PyTorch and OpenCV. Compares EfficientNetV2/MobileNetV2 for weather event detection, with Grad-CAM for Explainable AI.',
+    tags: ['PyTorch', 'OpenCV', 'HPC', 'Python'],
+    github: 'https://github.com/AryanThodupunuri/extreme-weather-classification',
   },
   {
     id: 'food-ordering-system',
     title: 'Food Ordering System',
-    description: 'A backend microservices architecture built with Java, Spring Boot, Kafka, Docker, and PostgreSQL. Simulates a full food delivery ecosystem using the Outbox Pattern for reliable event-driven messaging.',
-    image: '/project4.jpg',
+    description: 'Backend microservices architecture with Java, Spring Boot, Kafka, Docker, and PostgreSQL. Implements the Outbox Pattern for reliable event-driven messaging.',
+    tags: ['Java', 'Kafka', 'Spring Boot', 'Docker'],
+    github: 'https://github.com/AryanThodupunuri/food-ordering-system',
   },
   {
     id: 'course-picker',
     title: 'Course Picker',
-    description: 'A React and Tailwind web application deployed via AWS S3 and CloudFront that helps UVA students optimize their course schedules. Features custom conflict-checking and robust data pipelines built with Python and Pandas.',
-    image: '/project5.jpg',
+    description: 'React web app deployed on AWS S3/CloudFront that helps UVA students optimize schedules. Features conflict-checking algorithms and Python/Pandas data pipelines.',
+    tags: ['React', 'Python', 'AWS S3', 'CloudFront'],
+    github: 'https://github.com/AryanThodupunuri/course-picker',
   },
   {
     id: 'slacklite',
     title: 'SlackLite',
-    description: 'A real-time messaging app deployed with React, FastAPI, MongoDB, and AWS S3 for secure file uploads. Built for low-latency communication utilizing WebSockets.',
-    image: '/project6.jpg',
+    description: 'Real-time messaging app with React, FastAPI, MongoDB, and AWS S3 for file uploads. Built for low-latency communication with WebSockets.',
+    tags: ['React', 'FastAPI', 'MongoDB', 'WebSockets'],
+    github: 'https://github.com/AryanThodupunuri/SlackLite',
   },
 ];
 
 const Projects = () => {
   return (
-    <main className="flex-1 container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
-        My Projects
-      </h1>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
-          <div key={project.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            <img src={project.image} alt={project.title} className="w-full h-48 object-cover" />
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+    <main className="min-h-screen bg-white dark:bg-gray-950">
+      <div className="max-w-5xl mx-auto px-6 py-20">
+        <div className="mb-14">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">Work</h2>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Projects
+          </h1>
+          <p className="mt-3 text-gray-500 dark:text-gray-400 max-w-xl">
+            A selection of things I've built — from distributed systems to ML pipelines.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-5">
+          {projects.map((project) => (
+            <Link
+              key={project.id}
+              to={`/projects/${project.id}`}
+              className="group block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                  </svg>
+                </div>
+                <svg className="w-4 h-4 text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
                 {project.title}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
                 {project.description}
               </p>
-              <Link
-                to={`/projects/${project.id}`}
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Learn More →
-              </Link>
-            </div>
-          </div>
-        ))}
+              <div className="flex flex-wrap gap-1.5">
+                {project.tags.map(tag => (
+                  <span key={tag} className="px-2 py-0.5 rounded-md text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </main>
   );
