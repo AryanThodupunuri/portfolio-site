@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -36,6 +38,36 @@ const Header = () => {
               {label}
             </Link>
           ))}
+
+          {user ? (
+            <div className="flex items-center gap-3">
+              <Link
+                to="/vault"
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors duration-200 ${
+                  location.pathname === '/vault'
+                    ? 'text-indigo-600 dark:text-indigo-400'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400'
+                }`}
+              >
+                <span>🔒</span> Vault
+              </Link>
+              <button
+                onClick={signOut}
+                className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                title={`Sign out (${user.email})`}
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm font-medium text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+            >
+              🔒
+            </Link>
+          )}
+
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -75,6 +107,20 @@ const Header = () => {
               {label}
             </Link>
           ))}
+          {user ? (
+            <>
+              <Link to="/vault" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                🔒 Vault
+              </Link>
+              <button onClick={() => { signOut(); setMenuOpen(false); }} className="text-sm text-left text-gray-500 dark:text-gray-400">
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link to="/login" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              🔒 Sign in
+            </Link>
+          )}
         </div>
       )}
     </header>

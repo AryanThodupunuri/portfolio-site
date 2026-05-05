@@ -17,7 +17,7 @@ const Landing = () => {
           Aryan<br />Thodupunuri
         </h1>
         <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mb-8 leading-relaxed">
-          CS student at <span className="text-gray-900 dark:text-white font-medium">UVA</span> · Incoming SDE Intern at <span className="text-gray-900 dark:text-white font-medium">Amazon Web Services</span>. I build distributed backend systems, cloud infrastructure, and scalable applications.
+          CS student at <span className="text-gray-900 dark:text-white font-medium">UVA</span> · Incoming SDE Intern at <span className="text-gray-900 dark:text-white font-medium">AWS</span>. I like building things that actually work at scale — backends, infra, the occasional ML experiment.
         </p>
         <div className="flex flex-wrap gap-3 mb-14">
           <a
@@ -59,10 +59,10 @@ const Landing = () => {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6">About</h2>
           <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
             <p>
-              I'm a Computer Science student at UVA and an incoming Software Development Engineer Intern at AWS. I specialize in <span className="text-gray-900 dark:text-gray-200 font-medium">distributed backend systems</span>, <span className="text-gray-900 dark:text-gray-200 font-medium">cloud infrastructure</span>, and building scalable applications that solve real problems.
+              I'm a CS student at UVA headed to AWS this summer. Most of my time goes toward distributed systems and cloud infra — I find the problem of "how do you make this not fall over at 10x load" genuinely interesting, not just a resume line.
             </p>
             <p>
-              My work spans cloud architecture, high-concurrency microservices, and machine learning pipelines — including <span className="text-gray-900 dark:text-gray-200 font-medium">CourseCompass</span> (a full-stack Chrome Extension serving 25,000+ UVA students), a modular <span className="text-gray-900 dark:text-gray-200 font-medium">AWS Landing Zone</span> built with Terraform, and an <span className="text-gray-900 dark:text-gray-200 font-medium">HPC-accelerated weather classification pipeline</span> using PyTorch and Grad-CAM.
+              Some things I've built: <span className="text-gray-900 dark:text-gray-200 font-medium">CourseCompass</span>, a Chrome Extension that ~25,000 UVA students use during registration; a <span className="text-gray-900 dark:text-gray-200 font-medium">Terraform AWS Landing Zone</span> with automated security guardrails; and a <span className="text-gray-900 dark:text-gray-200 font-medium">weather classification pipeline</span> on Rivanna HPC using PyTorch + Grad-CAM for explainability. I also break things in production and learn from it.
             </p>
           </div>
         </div>
