@@ -1,0 +1,13 @@
+# Netlify redirects for React SPA
+# This ensures all routes serve index.html for client-side routing
+
+# SPA fallback - serve index.html for all routes not matching static files
+/*    /index.html   200
+
+# Optional: Add specific redirects here if needed
+# Examples:
+# /old-page  /new-page  301
+# /blog     https://medium.com/@yourusername  302
+
+# API redirects (if you add any backend endpoints)
+# /api/*  https://your-api-endpoint.com/:splat  200
