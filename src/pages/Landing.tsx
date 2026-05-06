@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import AnimatedText from '../components/AnimatedText';
 
 const skills = ['Java', 'Spring Boot', 'Python', 'AWS', 'Terraform', 'Docker', 'Apache Kafka', 'PostgreSQL', 'PyTorch', 'React', 'Git'];
 
@@ -14,10 +15,20 @@ const Landing = () => {
           </span>
         </div>
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
-          Aryan<br />Thodupunuri
+          <AnimatedText
+            texts={["Aryan Thodupunuri", "Software Engineer", "Builder · Problem Solver", "CS @ UVA"]}
+            type="typewriter"
+            interval={2200}
+            className="block"
+          />
         </h1>
         <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mb-8 leading-relaxed">
-          CS student at <span className="text-gray-900 dark:text-white font-medium">UVA</span> · Incoming SDE Intern at <span className="text-gray-900 dark:text-white font-medium">AWS</span>. I like building things that actually work at scale — backends, infra, the occasional ML experiment.
+          <AnimatedText
+            texts={["CS student at UVA · Incoming SDE Intern at AWS.", "I like building things that actually work at scale.", "Backends, infra, the occasional ML experiment."]}
+            type="fade"
+            interval={2600}
+            className="block"
+          />
         </p>
         <div className="flex flex-wrap gap-3 mb-14">
           <a

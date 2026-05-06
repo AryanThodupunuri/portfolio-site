@@ -12,6 +12,10 @@ const Header = () => {
   const links = [
     { to: '/', label: 'Home' },
     { to: '/projects', label: 'Projects' },
+    { to: '/sandbox', label: 'Project Sandbox' },
+    { to: '/skills', label: 'Skill Tracker' },
+    { to: '/oss', label: 'Open Source' },
+    { to: '/badges', label: 'Badges' },
     { to: '/experience', label: 'Experience' },
     { to: '/contact', label: 'Contact' },
   ];

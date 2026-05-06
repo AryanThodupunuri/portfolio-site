@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 
-// ---------------------------------------------------------------------------
-// Mock data — replace with Supabase queries once tables are set up (see SETUP.md)
-// ---------------------------------------------------------------------------
-
-interface InterviewNote {
+type InterviewNote = {
   id: string;
   company: string;
   role: string;
@@ -15,109 +12,24 @@ interface InterviewNote {
   questions: string[];
   notes: string;
   result: 'pending' | 'passed' | 'rejected';
-}
-
-interface NetworkingNote {
+};
+type NetworkingNote = {
   id: string;
   name: string;
   company: string;
   date: string;
   context: string;
   takeaways: string;
-  followUp: string;
-}
-
-interface CompanyPrepNote {
+  follow_up: string;
+};
+type CompanyPrepNote = {
   id: string;
   company: string;
   role: string;
   stage: 'researching' | 'applied' | 'interviewing' | 'offer' | 'rejected';
   notes: string;
   resources: string[];
-}
-
-const mockInterviews: InterviewNote[] = [
-  {
-    id: '1',
-    company: 'Amazon',
-    role: 'SDE Intern',
-    round: 'Online Assessment',
-    date: 'Jan 2026',
-    questions: ['Two-sum variant with constraints', 'LRU Cache (sliding window approach)'],
-    notes: 'OA was 70 mins, two LC-style problems. First was straightforward HashMap, second needed a deque. Got both in time.',
-    result: 'passed',
-  },
-  {
-    id: '2',
-    company: 'Amazon',
-    role: 'SDE Intern',
-    round: 'Final Loop (3 rounds)',
-    date: 'Feb 2026',
-    questions: ['Design a rate limiter', 'Behavioral: ownership/conflict stories', 'Trees + DP follow-ups'],
-    notes: 'Used sliding window counter for rate limiter. Talked through token bucket as alternative. LP rounds went well — used STAR, hit Ownership and Deliver Results. Offer received.',
-    result: 'passed',
-  },
-  {
-    id: '3',
-    company: 'Palantir',
-    role: 'SWE',
-    round: 'Karat Screen',
-    date: 'Dec 2025',
-    questions: ['Graph traversal (islands variant)', 'Mock PR code review'],
-    notes: 'Code review part was harder than expected — lots of edge cases in the diff. Should have asked more clarifying questions upfront.',
-    result: 'rejected',
-  },
-];
-
-const mockNetworking: NetworkingNote[] = [
-  {
-    id: '1',
-    name: 'Priya Nair',
-    company: 'Stripe',
-    date: 'Mar 2026',
-    context: 'Found on LinkedIn — 2021 UVA CS grad, reached out cold.',
-    takeaways: 'Stripe interviews heavily on system design even for internships. Focus on data modeling. Culture is very writing-driven — internal docs matter.',
-    followUp: 'She offered to refer me for summer \'27. Keep in touch.',
-  },
-  {
-    id: '2',
-    name: 'Marcus Webb',
-    company: 'AWS (S3 team)',
-    date: 'Feb 2026',
-    context: 'Met at UVA career fair, followed up a week later.',
-    takeaways: 'S3 team cares a lot about fault tolerance and durability guarantees. He mentioned the on-call rotation is intense. Good team for infra learning though.',
-    followUp: 'Said to ping him once I start my internship this summer.',
-  },
-];
-
-const mockCompanyPrep: CompanyPrepNote[] = [
-  {
-    id: '1',
-    company: 'Jane Street',
-    role: 'SWE Intern 2027',
-    stage: 'researching',
-    notes: 'Heavy OCaml focus, but Python is ok too. Known for probability/math-heavy technical screens. Start grinding Bayesian problems and functional patterns. Notorious for hard coding rounds.',
-    resources: ['CLRS chapter on randomized algorithms', 'Glassdoor reports', 'YouTube: "Jane Street internship experience 2024"'],
-  },
-  {
-    id: '2',
-    company: 'Google',
-    role: 'SWE Intern 2027',
-    stage: 'researching',
-    notes: 'Phone screen is usually 45 min, 1-2 coding problems, one easy-medium one harder. Googleyness in on-site. Need to nail time/space complexity explanations out loud. Blind 75 is the baseline.',
-    resources: ['Neetcode 150', 'Google interview prep guide', 'Tech Interview Handbook'],
-  },
-  {
-    id: '3',
-    company: 'Amazon',
-    role: 'SDE Intern 2026',
-    stage: 'offer',
-    notes: '16 LP principles — know all of them cold. OA typically 2 coding + work sim. Loop is 3 rounds: 1 coding + LP, 1 coding + LP, 1 design. They care a lot about Ownership and Bias for Action.',
-    resources: ['Amazon LP stories doc (personal)', 'LC top 50 Amazon questions', 'Amazon SDE interview guide on YouTube'],
-  },
-];
-
-// ---------------------------------------------------------------------------
+};
 
 type Section = 'interviews' | 'networking' | 'prep';
 
@@ -140,6 +52,46 @@ const InterviewVault = () => {
   const navigate = useNavigate();
   const [section, setSection] = useState<Section>('interviews');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [interviews, setInterviews] = useState<InterviewNote[]>([]);
+  const [networking, setNetworking] = useState<NetworkingNote[]>([]);
+  const [prep, setPrep] = useState<CompanyPrepNote[]>([]);
+
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    setError(null);
+    Promise.all([
+      supabase
+        .from('interview_notes')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('networking_notes')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('company_prep')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+    ]).then(([i, n, c]) => {
+      if (i.error || n.error || c.error) {
+        setError(i.error?.message || n.error?.message || c.error?.message || 'Failed to load notes');
+        setInterviews([]);
+        setNetworking([]);
+        setPrep([]);
+      } else {
+        setInterviews(i.data || []);
+        setNetworking(n.data || []);
+        setPrep(c.data || []);
+      }
+      setLoading(false);
+    });
+  }, [user]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -173,16 +125,16 @@ const InterviewVault = () => {
           </button>
         </div>
 
-        {/* Section tabs */}
-        <div className="flex gap-1 p-1 rounded-xl bg-gray-100 dark:bg-gray-800/60 mb-8">
-          {([
-            { id: 'interviews', label: 'Interview Notes', icon: '📝' },
+        {/* Tab Bar */}
+        <div className="flex gap-2 mb-8">
+          {[
+            { id: 'interviews', label: 'Interview Vault', icon: '�' },
             { id: 'networking', label: 'Networking Calls', icon: '🤝' },
             { id: 'prep', label: 'Company Prep', icon: '🎯' },
-          ] as { id: Section; label: string; icon: string }[]).map(tab => (
+          ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setSection(tab.id)}
+              onClick={() => setSection(tab.id as Section)}
               className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
                 section === tab.id
                   ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
@@ -198,8 +150,14 @@ const InterviewVault = () => {
         {/* --- Interview Notes --- */}
         {section === 'interviews' && (
           <div className="space-y-3">
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{mockInterviews.length} entries</p>
-            {mockInterviews.map(entry => (
+            {loading ? (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading interview notes...</p>
+            ) : error ? (
+              <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
+            ) : (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{interviews.length} entries</p>
+            )}
+            {interviews.map(entry => (
               <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
                 <button
                   onClick={() => toggle(entry.id)}
@@ -251,8 +209,14 @@ const InterviewVault = () => {
         {/* --- Networking --- */}
         {section === 'networking' && (
           <div className="space-y-3">
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{mockNetworking.length} entries</p>
-            {mockNetworking.map(entry => (
+            {loading ? (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading networking notes...</p>
+            ) : error ? (
+              <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
+            ) : (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{networking.length} entries</p>
+            )}
+            {networking.map(entry => (
               <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
                 <button
                   onClick={() => toggle(entry.id)}
@@ -275,7 +239,7 @@ const InterviewVault = () => {
                     {[
                       { label: 'Context', value: entry.context },
                       { label: 'Takeaways', value: entry.takeaways },
-                      { label: 'Follow-up', value: entry.followUp },
+                      { label: 'Follow-up', value: entry.follow_up },
                     ].map(({ label, value }) => (
                       <div key={label}>
                         <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">{label}</p>
@@ -292,8 +256,14 @@ const InterviewVault = () => {
         {/* --- Company Prep --- */}
         {section === 'prep' && (
           <div className="space-y-3">
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{mockCompanyPrep.length} entries</p>
-            {mockCompanyPrep.map(entry => (
+            {loading ? (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading company prep notes...</p>
+            ) : error ? (
+              <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
+            ) : (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{prep.length} entries</p>
+            )}
+            {prep.map(entry => (
               <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
                 <button
                   onClick={() => toggle(entry.id)}
@@ -341,7 +311,7 @@ const InterviewVault = () => {
 
         <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
           <p className="text-xs text-gray-400 dark:text-gray-500">
-            💡 Notes are currently stored as mock data. See <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs">SETUP.md</code> to connect Supabase tables.
+            💡 Notes are loaded from Supabase. See <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs">SETUP.md</code> to add, edit, or manage your data.
           </p>
         </div>
       </div>
