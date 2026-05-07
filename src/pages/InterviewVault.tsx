@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 type InterviewNote = {
@@ -47,9 +47,134 @@ const stageColors = {
   rejected: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
 };
 
+type InterviewCompany = {
+  company: string;
+  role: string;
+  location: string;
+  season: string;
+  outcome: string;
+  rating: number;
+  salary?: string;
+  employmentType?: string;
+  noteSummary: string;
+};
+
+const interviewCompanies: InterviewCompany[] = [
+  {
+    company: 'AWS',
+    role: 'Software Development Engineer Intern',
+    location: 'Arlington, VA',
+    season: 'Summer 2026',
+    outcome: 'Offer',
+    rating: 5,
+    salary: '$55/hr',
+    noteSummary: 'Selective technical process focused on problem-solving, leadership principles, and ownership at scale.',
+  },
+  {
+    company: 'Barclays',
+    role: 'Software Engineering Intern',
+    location: 'Whippany, NJ',
+    season: 'Summer 2026',
+    outcome: 'Rejected at Technical',
+    rating: 3,
+    salary: 'Estimated $51/hr',
+    noteSummary: 'Formal finance-tech process with a Powerday. Tested technical ability and behavioral fit in a finance technology context.',
+  },
+  {
+    company: 'EY',
+    role: 'Technology Consulting Intern',
+    location: 'Tysons, VA',
+    season: 'Summer 2026',
+    outcome: 'Offer',
+    rating: 4,
+    salary: 'Estimated $42/hr',
+    noteSummary: 'Consulting-oriented process focused on communication, business context, and applying technical skills to client work.',
+  },
+  {
+    company: 'Freddie Mac',
+    role: 'Software Engineering Intern',
+    location: 'McLean, VA',
+    season: 'Summer 2026',
+    outcome: 'Offer',
+    rating: 4,
+    salary: '$35/hr',
+    noteSummary: 'Balanced technical and communication-focused interviews in a financial services engineering environment.',
+  },
+  {
+    company: 'AT&T',
+    role: 'Software Engineering Intern',
+    location: 'Dallas, TX',
+    season: 'Summer 2026',
+    outcome: 'Offer',
+    rating: 4,
+    salary: '$37/hr',
+    noteSummary: 'Behavioral and experience-focused process with some technical discussion around projects and cloud experience.',
+  },
+  {
+    company: 'CoStar Group',
+    role: 'Software Engineering Intern',
+    location: 'Arlington, VA',
+    season: 'Summer 2026',
+    outcome: 'Offer',
+    rating: 5,
+    salary: '$45/hr',
+    noteSummary: 'SWE-aligned interviews centered on technical projects, backend experience, and engineering decision-making.',
+  },
+  {
+    company: 'Fannie Mae',
+    role: 'Software Engineering Intern',
+    location: 'Reston, VA',
+    season: 'Summer 2026',
+    outcome: 'Offer',
+    rating: 4,
+    salary: '$41/hr',
+    noteSummary: 'Structured process with behavioral, technical, and project-based discussion on enterprise engineering work.',
+  },
+  {
+    company: 'Snowflake',
+    role: 'Software Engineering Intern',
+    location: 'Menlo Park, CA',
+    season: 'Summer 2026',
+    outcome: 'Rejected at Team Matching',
+    rating: 3,
+    noteSummary: 'Highly technical process with strong coding fundamentals and problem-solving, ended at team matching.',
+  },
+  {
+    company: 'Booz Allen Hamilton',
+    role: 'Software Engineering Intern',
+    location: 'McLean, VA',
+    season: 'Summer 2025',
+    outcome: 'Offer',
+    rating: 5,
+    salary: '$35/hr',
+    employmentType: 'Hybrid',
+    noteSummary: 'Project-focused and communication-heavy interviews for consulting work, highlighting AWS and full-stack background.',
+  },
+  {
+    company: 'CGI',
+    role: 'Software Engineering Intern',
+    location: 'Fairfax, VA',
+    season: 'Summer 2025',
+    outcome: 'Offer',
+    rating: 4,
+    salary: 'Estimated $25/hr',
+    noteSummary: 'Conversational process centered on background, projects, and ability to learn quickly within a consulting team.',
+  },
+  {
+    company: '2nd Order Solutions',
+    role: 'Software Engineering Intern',
+    location: 'Arlington, VA',
+    season: 'Summer 2025',
+    outcome: 'Rejected at Technical',
+    rating: 3,
+    noteSummary: 'Technical, fundamentals-focused process with emphasis on communication and reasoning through solutions under pressure.',
+  },
+];
+
 const InterviewVault = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const isAuthenticated = Boolean(user);
   const [section, setSection] = useState<Section>('interviews');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -105,209 +230,293 @@ const InterviewVault = () => {
       <div className="max-w-4xl mx-auto px-4 py-12">
 
         {/* Header */}
-        <div className="flex items-start justify-between mb-10 gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-lg">🔒</span>
-              <span className="text-xs font-semibold uppercase tracking-widest text-indigo-500">Private</span>
+              <span className="text-xs font-semibold uppercase tracking-widest text-indigo-500">Interview Vault</span>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Interview Vault</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Signed in as <span className="font-medium text-gray-700 dark:text-gray-300">{user?.email}</span></p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
+              {isAuthenticated
+                ? 'Private interview notes you can review after signing in.'
+                : 'A public list of companies I interviewed with. Sign in to unlock my private interview notes for each company.'}
+            </p>
+            {!isAuthenticated && (
+              <p className="mt-2 text-sm text-gray-400 dark:text-gray-500">
+                Visitors can see the full interview company list. Private round notes and outcomes require signing in.
+              </p>
+            )}
           </div>
-          <button
-            onClick={handleSignOut}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shrink-0"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Sign out
-          </button>
-        </div>
-
-        {/* Tab Bar */}
-        <div className="flex gap-2 mb-8">
-          {[
-            { id: 'interviews', label: 'Interview Vault', icon: '�' },
-            { id: 'networking', label: 'Networking Calls', icon: '🤝' },
-            { id: 'prep', label: 'Company Prep', icon: '🎯' },
-          ].map(tab => (
+          {isAuthenticated ? (
             <button
-              key={tab.id}
-              onClick={() => setSection(tab.id as Section)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                section === tab.id
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
+              onClick={handleSignOut}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              <span>{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
+              Sign out
             </button>
-          ))}
+          ) : (
+            <Link
+              to="/login"
+              className="inline-flex items-center justify-center px-5 py-3 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
+            >
+              Sign in to view private notes
+            </Link>
+          )}
         </div>
 
-        {/* --- Interview Notes --- */}
-        {section === 'interviews' && (
-          <div className="space-y-3">
-            {loading ? (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading interview notes...</p>
-            ) : error ? (
-              <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
-            ) : (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{interviews.length} entries</p>
+        {/* Public companies list */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                Interviewed Companies
+              </h2>
+              <p className="mt-2 text-gray-500 dark:text-gray-400 max-w-2xl">
+                A complete list of companies I interviewed with, available for anyone visiting this page.
+              </p>
+            </div>
+            {!isAuthenticated && (
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Sign in to unlock private notes</span>
             )}
-            {interviews.map(entry => (
-              <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-                <button
-                  onClick={() => toggle(entry.id)}
-                  className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left gap-4"
-                >
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-semibold text-gray-900 dark:text-white">{entry.company}</span>
-                        <span className="text-gray-400 dark:text-gray-500 text-sm">·</span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{entry.round}</span>
-                      </div>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.role} · {entry.date}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${resultColors[entry.result]}`}>
-                      {entry.result}
-                    </span>
-                    <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedId === entry.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </button>
-                {expandedId === entry.id && (
-                  <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Questions</p>
-                      <ul className="space-y-1.5">
-                        {entry.questions.map((q, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                            <span className="text-indigo-400 mt-0.5 shrink-0">—</span>
-                            {q}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Notes</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{entry.notes}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
-        )}
-
-        {/* --- Networking --- */}
-        {section === 'networking' && (
-          <div className="space-y-3">
-            {loading ? (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading networking notes...</p>
-            ) : error ? (
-              <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
-            ) : (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{networking.length} entries</p>
-            )}
-            {networking.map(entry => (
-              <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-                <button
-                  onClick={() => toggle(entry.id)}
-                  className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left gap-4"
-                >
+          <div className="grid gap-5 sm:grid-cols-2">
+            {interviewCompanies.map(company => (
+              <div key={company.company} className="rounded-3xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
+                <div className="flex items-start justify-between gap-4">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-gray-900 dark:text-white">{entry.name}</span>
-                      <span className="text-gray-400 dark:text-gray-500 text-sm">·</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{entry.company}</span>
-                    </div>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.date}</p>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{company.company}</h3>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{company.role}</p>
+                    <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{company.location}</p>
                   </div>
-                  <svg className={`w-4 h-4 text-gray-400 shrink-0 transition-transform ${expandedId === entry.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {expandedId === entry.id && (
-                  <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
-                    {[
-                      { label: 'Context', value: entry.context },
-                      { label: 'Takeaways', value: entry.takeaways },
-                      { label: 'Follow-up', value: entry.follow_up },
-                    ].map(({ label, value }) => (
-                      <div key={label}>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">{label}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{value}</p>
-                      </div>
+                  <div className="text-right text-xs text-gray-400 dark:text-gray-500">
+                    <div>{company.season}</div>
+                    {company.employmentType && <div className="mt-1">{company.employmentType}</div>}
+                  </div>
+                </div>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    {company.outcome}
+                  </span>
+                  {company.salary && (
+                    <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 dark:bg-blue-900/20 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-200">
+                      {company.salary}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-4 flex items-center gap-2">
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">Rating:</span>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: 5 }, (_, idx) => (
+                      <span key={idx} className={idx < company.rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-700'}>★</span>
                     ))}
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                </div>
 
-        {/* --- Company Prep --- */}
-        {section === 'prep' && (
-          <div className="space-y-3">
-            {loading ? (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading company prep notes...</p>
-            ) : error ? (
-              <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
-            ) : (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{prep.length} entries</p>
-            )}
-            {prep.map(entry => (
-              <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-                <button
-                  onClick={() => toggle(entry.id)}
-                  className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left gap-4"
-                >
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-gray-900 dark:text-white">{entry.company}</span>
-                      <span className="text-gray-400 dark:text-gray-500 text-sm">·</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{entry.role}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${stageColors[entry.stage]}`}>
-                      {entry.stage}
-                    </span>
-                    <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedId === entry.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </button>
-                {expandedId === entry.id && (
-                  <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Notes</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{entry.notes}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Resources</p>
-                      <ul className="space-y-1.5">
-                        {entry.resources.map((r, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                            <span className="text-indigo-400 mt-0.5 shrink-0">—</span>
-                            {r}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {company.noteSummary}
+                </p>
+                {!isAuthenticated && (
+                  <div className="mt-5">
+                    <Link to="/login" className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
+                      Sign in to view private notes
+                    </Link>
                   </div>
                 )}
               </div>
             ))}
           </div>
-        )}
+        </div>
+
+        {isAuthenticated ? (
+          <>
+            {/* Tab Bar */}
+            <div className="flex gap-2 mb-8">
+              {[
+                { id: 'interviews', label: 'Interview Vault', icon: '🗂' },
+                { id: 'networking', label: 'Networking Calls', icon: '🤝' },
+                { id: 'prep', label: 'Company Prep', icon: '🎯' },
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSection(tab.id as Section)}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                    section === tab.id
+                      ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  <span>{tab.icon}</span>
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* --- Interview Notes --- */}
+            {section === 'interviews' && (
+              <div className="space-y-3">
+                {loading ? (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading interview notes...</p>
+                ) : error ? (
+                  <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
+                ) : (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{interviews.length} entries</p>
+                )}
+                {interviews.map(entry => (
+                  <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                    <button
+                      onClick={() => toggle(entry.id)}
+                      className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left gap-4"
+                    >
+                      <div className="flex items-center gap-4 min-w-0">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold text-gray-900 dark:text-white">{entry.company}</span>
+                            <span className="text-gray-400 dark:text-gray-500 text-sm">·</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">{entry.round}</span>
+                          </div>
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.role} · {entry.date}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${resultColors[entry.result]}`}>
+                          {entry.result}
+                        </span>
+                        <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedId === entry.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </button>
+                    {expandedId === entry.id && (
+                      <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Questions</p>
+                          <ul className="space-y-1.5">
+                            {entry.questions.map((q, i) => (
+                              <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span className="text-indigo-400 mt-0.5 shrink-0">—</span>
+                                {q}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Notes</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{entry.notes}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* --- Networking --- */}
+            {section === 'networking' && (
+              <div className="space-y-3">
+                {loading ? (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading networking notes...</p>
+                ) : error ? (
+                  <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
+                ) : (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{networking.length} entries</p>
+                )}
+                {networking.map(entry => (
+                  <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                    <button
+                      onClick={() => toggle(entry.id)}
+                      className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left gap-4"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-gray-900 dark:text-white">{entry.name}</span>
+                          <span className="text-gray-400 dark:text-gray-500 text-sm">·</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400">{entry.company}</span>
+                        </div>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{entry.date}</p>
+                      </div>
+                      <svg className={`w-4 h-4 text-gray-400 shrink-0 transition-transform ${expandedId === entry.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {expandedId === entry.id && (
+                      <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
+                        {[
+                          { label: 'Context', value: entry.context },
+                          { label: 'Takeaways', value: entry.takeaways },
+                          { label: 'Follow-up', value: entry.follow_up },
+                        ].map(({ label, value }) => (
+                          <div key={label}>
+                            <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">{label}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{value}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* --- Company Prep --- */}
+            {section === 'prep' && (
+              <div className="space-y-3">
+                {loading ? (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Loading company prep notes...</p>
+                ) : error ? (
+                  <p className="text-xs text-red-500 dark:text-red-400 mb-4">{error}</p>
+                ) : (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">{prep.length} entries</p>
+                )}
+                {prep.map(entry => (
+                  <div key={entry.id} className="rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                    <button
+                      onClick={() => toggle(entry.id)}
+                      className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors text-left gap-4"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-semibold text-gray-900 dark:text-white">{entry.company}</span>
+                          <span className="text-gray-400 dark:text-gray-500 text-sm">·</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400">{entry.role}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${stageColors[entry.stage]}`}>
+                          {entry.stage}
+                        </span>
+                        <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedId === entry.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </button>
+                    {expandedId === entry.id && (
+                      <div className="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Notes</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{entry.notes}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Resources</p>
+                          <ul className="space-y-1.5">
+                            {entry.resources.map((r, i) => (
+                              <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span className="text-indigo-400 mt-0.5 shrink-0">—</span>
+                                {r}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        ) : null}
 
         <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
           <p className="text-xs text-gray-400 dark:text-gray-500">

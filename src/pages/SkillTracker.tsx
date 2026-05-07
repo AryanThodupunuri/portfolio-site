@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 
 interface LeetCodeStats {
   totalSolved: number;
-  totalQuestions: number;
   easySolved: number;
-  totalEasy: number;
   mediumSolved: number;
-  totalMedium: number;
   hardSolved: number;
-  totalHard: number;
-  ranking: number;
+  totalSubmissions: number;
+  acceptedSubmissions: number;
   acceptanceRate: number;
 }
 
 const LEETCODE_USERNAME = 'aryant437';
+const LEETCODE_PROFILE_URL = `https://leetcode.com/${LEETCODE_USERNAME}/`;
+const MAX_SKILL_YEARS = 3;
 
 const skills = [
   // Languages
@@ -70,18 +69,19 @@ const SkillTracker: React.FC = () => {
     fetch(`https://alfa-leetcode-api.onrender.com/${LEETCODE_USERNAME}/solved`)
       .then(res => res.json())
       .then(data => {
-        if (data && typeof data.solvedProblem !== 'undefined') {
+        if (data && typeof data.solvedProblem !== 'undefined' && Array.isArray(data.acSubmissionNum) && Array.isArray(data.totalSubmissionNum)) {
+          const totalSubmissions = data.totalSubmissionNum.reduce((sum: number, item: any) => sum + (item.submissions ?? 0), 0);
+          const acceptedSubmissions = data.acSubmissionNum.reduce((sum: number, item: any) => sum + (item.submissions ?? 0), 0);
+          const acceptanceRate = totalSubmissions > 0 ? Math.round((acceptedSubmissions / totalSubmissions) * 100) : 0;
+
           setLc({
             totalSolved: data.solvedProblem,
-            totalQuestions: data.totalProblem ?? 3400,
             easySolved: data.easySolved ?? 0,
-            totalEasy: data.totalEasy ?? 0,
             mediumSolved: data.mediumSolved ?? 0,
-            totalMedium: data.totalMedium ?? 0,
             hardSolved: data.hardSolved ?? 0,
-            totalHard: data.totalHard ?? 0,
-            ranking: data.ranking ?? 0,
-            acceptanceRate: data.acceptanceRate ?? 0,
+            totalSubmissions,
+            acceptedSubmissions,
+            acceptanceRate,
           });
         } else {
           setLcError(true);
@@ -103,58 +103,100 @@ const SkillTracker: React.FC = () => {
             Skill Tracker
           </h1>
           <p className="mt-3 text-gray-500 dark:text-gray-400 max-w-xl">
-            A dynamic showcase of my technical skills and LeetCode achievements.
+            A dynamic showcase of my technical skills with real experience levels.
           </p>
         </section>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
-          {skills.map((skill, index) => (
-            <div
-              key={index}
-              className="group block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
-                    {skill.name}
-                  </h3>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div
-                      className="bg-blue-600 h-2.5 rounded-full"
-                      style={{ width: `${skill.experience * 20}%` }}
-                    ></div>
+          {skills.map((skill, index) => {
+            const experienceLabel = `${skill.experience} year${skill.experience === 1 ? '' : 's'} experience`;
+            const progressWidth = Math.round((skill.experience / MAX_SKILL_YEARS) * 100);
+            return (
+              <div
+                key={index}
+                className="group block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200"
+              >
+                <div className="mb-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                      {skill.name}
+                    </h3>
+                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      {experienceLabel}
+                    </span>
                   </div>
                 </div>
+                <div className="mb-3 text-sm text-gray-500 dark:text-gray-400">
+                  Level based on recent hands-on experience and internship work.
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div
+                    className="bg-blue-600 h-2.5 rounded-full"
+                    style={{ width: `${Math.max(progressWidth, 10)}%` }}
+                  ></div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* LeetCode Tracker Section */}
         <div className="mt-14">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            LeetCode Stats
-          </h2>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                LeetCode Stats
+              </h2>
+              <p className="text-gray-500 dark:text-gray-400 max-w-2xl">
+                Live problem stats from my public LeetCode profile, plus a direct profile link.
+              </p>
+            </div>
+            <a
+              href={LEETCODE_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-5 py-3 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors duration-200"
+            >
+              View My LeetCode Profile
+            </a>
+          </div>
+
           {lcLoading ? (
-            <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+            <p className="text-gray-500 dark:text-gray-400">Loading LeetCode data...</p>
           ) : lcError ? (
-            <p className="text-red-500">Failed to load LeetCode stats. Please try again later.</p>
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">LeetCode profile unavailable</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">
+                The live LeetCode data couldn't be loaded, but you can still visit my profile directly.
+              </p>
+              <a
+                href={LEETCODE_PROFILE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors duration-200"
+              >
+                Open LeetCode Profile
+              </a>
+            </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Total Problems Solved
-                </h3>
-                <p className="text-2xl font-bold text-blue-600">{lc?.totalSolved}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Out of {lc?.totalQuestions} problems
-                </p>
+            <div className="grid gap-6 lg:grid-cols-3">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Problems Solved</h3>
+                <p className="text-4xl font-bold text-blue-600 mb-2">{lc?.totalSolved}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Total problems solved on LeetCode</p>
               </div>
-              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Global Ranking
-                </h3>
-                <p className="text-2xl font-bold text-blue-600">#{lc?.ranking}</p>
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Acceptance Rate</h3>
+                <p className="text-4xl font-bold text-blue-600 mb-2">{lc?.acceptanceRate}%</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Accepted submissions across my LeetCode history</p>
+              </div>
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Recent Difficulty Breakdown</h3>
+                <div className="space-y-2 text-gray-500 dark:text-gray-400">
+                  <p>Easy: {lc?.easySolved}</p>
+                  <p>Medium: {lc?.mediumSolved}</p>
+                  <p>Hard: {lc?.hardSolved}</p>
+                </div>
               </div>
             </div>
           )}
