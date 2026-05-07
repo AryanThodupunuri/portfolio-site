@@ -1,4 +1,3 @@
-import AchievementsBadges from './pages/AchievementsBadges';
 import OpenSourceDashboard from './pages/OpenSourceDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -12,7 +11,7 @@ import Experience from './pages/Experience';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import InterviewVault from './pages/InterviewVault';
-import ProjectSandbox from './pages/ProjectSandbox';
+// import ProjectSandbox from './pages/ProjectSandbox';
 import SkillTracker from './pages/SkillTracker';
 
 function App() {
@@ -37,10 +36,10 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/sandbox" element={<ProjectSandbox />} />
+              {/* <Route path="/sandbox" element={<ProjectSandbox />} /> */}
               <Route path="/skills" element={<SkillTracker />} />
               <Route path="/oss" element={<OpenSourceDashboard />} />
-              <Route path="/badges" element={<AchievementsBadges />} />
+              {/* <Route path="/badges" element={<AchievementsBadges />} /> */}
             </Routes>
           </div>
         </Router>

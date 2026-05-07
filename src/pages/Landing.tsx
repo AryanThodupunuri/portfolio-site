@@ -8,6 +8,20 @@ const Landing = () => {
     <main className="min-h-screen bg-white dark:bg-gray-950">
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 pt-24 pb-20">
+        <div className="flex flex-col md:flex-row md:items-start md:gap-14">
+          {/* Profile picture */}
+          <div className="flex-shrink-0 flex justify-center md:justify-start mb-8 md:mb-0">
+            <div className="w-36 h-36 md:w-44 md:h-44 rounded-2xl overflow-hidden border-2 border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 shadow-lg">
+              {/* Replace 'profile.jpg' with your actual photo filename in src/assets/ */}
+              <img
+                src="/assets/IMG_4437.jpg"
+                alt="Aryan Thodupunuri"
+                className="w-full h-full object-cover"
+                onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            </div>
+          </div>
+          <div className="flex-1">
         <div className="mb-4">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>
@@ -64,6 +78,8 @@ const Landing = () => {
             LinkedIn
           </a>
         </div>
+          </div>{/* end flex-1 */}
+        </div>{/* end flex row */}
 
         {/* About */}
         <div className="border-t border-gray-100 dark:border-gray-800 pt-14 mb-14">

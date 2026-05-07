@@ -11,12 +11,11 @@ const Header = () => {
 
   const links = [
     { to: '/', label: 'Home' },
+    { to: '/experience', label: 'Experience' },
     { to: '/projects', label: 'Projects' },
-    { to: '/sandbox', label: 'Project Sandbox' },
     { to: '/skills', label: 'Skill Tracker' },
     { to: '/oss', label: 'Open Source' },
     { to: '/badges', label: 'Badges' },
-    { to: '/experience', label: 'Experience' },
     { to: '/contact', label: 'Contact' },
   ];
 
@@ -53,7 +52,7 @@ const Header = () => {
                     : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400'
                 }`}
               >
-                <span>🔒</span> Vault
+                <span>🔒</span> Interview Vault
               </Link>
               <button
                 onClick={signOut}
