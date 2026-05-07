@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
 
+const courseCompassImage = new URL('../assets/CourseCompass_System_Overview (1).png', import.meta.url).href;
+const awsLandingZoneImage = new URL('../assets/amazon_hq2.jpeg', import.meta.url).href;
+const extremeWeatherImage = new URL('../assets/extreme_weather_cnn.jpeg', import.meta.url).href;
+const foodOrderingImage = new URL('../assets/food_ordering_system.png', import.meta.url).href;
+const slackLiteImage = new URL('../assets/SlackLite.png', import.meta.url).href;
+
 const projects = [
 	{
 		id: 'coursecompass',
@@ -7,7 +13,7 @@ const projects = [
 		description: 'Full-stack UVA course registration platform combining Spring Boot, React, PostgreSQL, and a Chrome extension to simplify real-time course planning.',
 		tags: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'Docker'],
 		github: 'https://github.com/AryanThodupunuri/coursecompass',
-		image: '/assets/CourseCompass_System_Overview (1).png',
+		image: courseCompassImage,
 	},
 	{
 		id: 'aws-landing-zone',
@@ -15,7 +21,7 @@ const projects = [
 		description: 'Modular Terraform AWS landing zone with automated security guardrails, CI tests, and reusable infrastructure components for safe deployments.',
 		tags: ['Terraform', 'AWS', 'HCL', 'CI/CD'],
 		github: 'https://github.com/AryanThodupunuri/aws-landing-zone',
-		image: '/assets/aws_logo.png',
+		image: awsLandingZoneImage,
 	},
 	{
 		id: 'extreme-weather-classification',
@@ -23,7 +29,7 @@ const projects = [
 		description: 'AI-driven weather classification pipeline using PyTorch and Grad-CAM to make extreme weather detection explainable and accurate.',
 		tags: ['PyTorch', 'OpenCV', 'HPC', 'Python'],
 		github: 'https://github.com/AryanThodupunuri/extreme-weather-classification',
-		image: '/assets/extreme_weather_cnn.jpeg',
+		image: extremeWeatherImage,
 	},
 	{
 		id: 'food-ordering-system',
@@ -31,7 +37,7 @@ const projects = [
 		description: 'Microservices-based food ordering backend using Kafka, Spring Boot, and PostgreSQL with reliable event delivery and Docker deployment.',
 		tags: ['Java', 'Kafka', 'Spring Boot', 'Docker'],
 		github: 'https://github.com/AryanThodupunuri/food-ordering-system',
-		image: '/assets/food_ordering_system.png',
+		image: foodOrderingImage,
 	},
 	{
 		id: 'slacklite',
@@ -39,7 +45,7 @@ const projects = [
 		description: 'Real-time messaging platform built with React, FastAPI, MongoDB, and AWS S3 for secure file sharing and low-latency chat.',
 		tags: ['React', 'FastAPI', 'MongoDB', 'WebSockets'],
 		github: 'https://github.com/AryanThodupunuri/SlackLite',
-		image: '/assets/SlackLite.png',
+		image: slackLiteImage,
 	},
 ];
 

@@ -59,7 +59,6 @@ type InterviewCompany = {
   season: string;
   outcome: string;
   rating: number;
-  salary?: string;
   employmentType?: string;
   noteSummary: string;
 };
@@ -72,7 +71,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 5,
-    salary: '$55/hr',
     noteSummary: 'Selective technical process focused on problem-solving, leadership principles, and ownership at scale.',
   },
   {
@@ -82,7 +80,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Rejected at Technical',
     rating: 3,
-    salary: 'Estimated $51/hr',
     noteSummary: 'Formal finance-tech process with a Powerday. Tested technical ability and behavioral fit in a finance technology context.',
   },
   {
@@ -92,7 +89,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
-    salary: 'Estimated $42/hr',
     noteSummary: 'Consulting-oriented process focused on communication, business context, and applying technical skills to client work.',
   },
   {
@@ -102,7 +98,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
-    salary: '$35/hr',
     noteSummary: 'Balanced technical and communication-focused interviews in a financial services engineering environment.',
   },
   {
@@ -112,7 +107,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
-    salary: '$37/hr',
     noteSummary: 'Behavioral and experience-focused process with some technical discussion around projects and cloud experience.',
   },
   {
@@ -122,7 +116,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 5,
-    salary: '$45/hr',
     noteSummary: 'SWE-aligned interviews centered on technical projects, backend experience, and engineering decision-making.',
   },
   {
@@ -132,7 +125,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
-    salary: '$41/hr',
     noteSummary: 'Structured process with behavioral, technical, and project-based discussion on enterprise engineering work.',
   },
   {
@@ -151,7 +143,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2025',
     outcome: 'Offer',
     rating: 5,
-    salary: '$35/hr',
     employmentType: 'Hybrid',
     noteSummary: 'Project-focused and communication-heavy interviews for consulting work, highlighting AWS and full-stack background.',
   },
@@ -162,7 +153,6 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2025',
     outcome: 'Offer',
     rating: 4,
-    salary: 'Estimated $25/hr',
     noteSummary: 'Conversational process centered on background, projects, and ability to learn quickly within a consulting team.',
   },
   {
@@ -175,6 +165,19 @@ const interviewCompanies: InterviewCompany[] = [
     noteSummary: 'Technical, fundamentals-focused process with emphasis on communication and reasoning through solutions under pressure.',
   },
 ];
+
+const outcomeColors = {
+  offer: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+  rejected: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+  default: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-200',
+};
+
+const getOutcomeClass = (outcome: string) => {
+  const normalized = outcome.toLowerCase();
+  if (normalized.includes('offer')) return outcomeColors.offer;
+  if (normalized.includes('rejected')) return outcomeColors.rejected;
+  return outcomeColors.default;
+};
 
 const InterviewVault = () => {
   const { user, signOut } = useAuth();
@@ -245,8 +248,8 @@ const InterviewVault = () => {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Interview Vault</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
               {isAuthenticated
-                ? 'Private interview notes you can review after signing in.'
-                : 'A public list of companies I interviewed with. Sign in to unlock my private interview notes for each company.'}
+                ? 'You can see the interview list. Private notes appear only after your account is approved.'
+                : 'Anyone can browse the interview list. Sign in to request access to private notes after approval.'}
             </p>
             {!isAuthenticated && (
               <p className="mt-2 text-sm text-gray-400 dark:text-gray-500">
@@ -296,10 +299,7 @@ const InterviewVault = () => {
           </div>
           <div className="card mb-5">
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              Visitors can browse the full company list without logging in. Private interview notes are protected, and I approve or deny access manually through Supabase authentication.
-            </p>
-            <p className="mt-2 text-xs text-gray-400">
-              To approve people, add their email to your Supabase user list or allowlist; to deny access, remove them or disable their account in Supabase.
+              Visitors can browse the full company list without logging in. Private notes are protected — once you sign in, I can approve your account and then the notes tabs will become available.
             </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
@@ -318,14 +318,9 @@ const InterviewVault = () => {
                 </div>
 
                 <div className="mt-5 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${getOutcomeClass(company.outcome)}`}>
                     {company.outcome}
                   </span>
-                  {company.salary && (
-                    <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 dark:bg-blue-900/20 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-200">
-                      {company.salary}
-                    </span>
-                  )}
                 </div>
 
                 <div className="mt-4 flex items-center gap-2">

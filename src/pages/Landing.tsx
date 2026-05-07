@@ -76,12 +76,12 @@ const Landing = () => {
 
         {/* Photo gallery */}
           <div className="grid gap-4 md:grid-cols-2 mt-10 mb-14">
-          <div className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
-            <img src={uvaGameImage} alt="UVA game with friends" className="w-full h-80 object-cover" />
-          </div>
-          <div className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
-            <img src={boozAllenImage} alt="Booz Allen office with coworkers" className="w-full h-80 object-cover" />
-          </div>
+            <div className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
+              <img src={boozAllenImage} alt="Booz Allen office with coworkers" className="w-full h-full min-h-[20rem] object-contain bg-black/5" />
+            </div>
+            <div className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
+              <img src={uvaGameImage} alt="UVA game with friends" className="w-full h-full min-h-[20rem] object-cover" />
+            </div>
         </div>
 
         {/* About */}
@@ -89,10 +89,16 @@ const Landing = () => {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6">About</h2>
           <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
             <p>
-              I'm a CS student at UVA headed to AWS this summer. Most of my time goes toward distributed systems and cloud infra - I find the problem of "how do you make this not fall over at 10x load" genuinely interesting, not just a resume line.
+              Ever notice how the biggest challenge is rarely the code itself? At UVA, I keep finding that the real work is in making systems behave when people stop being polite about how they use them.
             </p>
             <p>
-              Some things I've built: <span className="text-gray-900 dark:text-gray-200 font-medium">CourseCompass</span>, a Chrome Extension that ~25,000 UVA students use during registration; a <span className="text-gray-900 dark:text-gray-200 font-medium">Terraform AWS Landing Zone</span> with automated security guardrails; and a <span className="text-gray-900 dark:text-gray-200 font-medium">weather classification pipeline</span> on Rivanna HPC using PyTorch + Grad-CAM for explainability. I also break things in production and learn from it.
+              Last semester, I spent more time tuning registration scraping and rate limiting than I did on UI polish for CourseCompass. That project now helps a lot of students find open classes faster, and the part I care about is that it actually survives traffic spikes.
+            </p>
+            <p>
+              I also built a reusable AWS landing zone with secure defaults and CI checks, and a weather model on Rivanna that had to fit in containers and still give reliable output. The work is never as clean as the plan, but when it does hold together, it feels worth the messy middle.
+            </p>
+            <p>
+              I try to write technology that can keep going after I stop looking at it. So I ask questions, I test the edge cases, and I keep the story of the user close enough that it shapes the next change.
             </p>
           </div>
         </div>
