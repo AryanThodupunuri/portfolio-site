@@ -18,7 +18,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-white dark:bg-gray-950">
+          <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
             <Header />
             <Routes>
               <Route path="/" element={<Landing />} />

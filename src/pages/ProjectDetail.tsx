@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 const projectDetails: { [key: string]: any } = {
   coursecompass: {
     title: 'CourseCompass',
+    github: 'https://github.com/AryanThodupunuri/coursecompass',
     problem: 'UVA students face information asymmetry during course registration, leading to suboptimal schedules and missed opportunities.',
     solution: 'Built a full-stack distributed system with a high-concurrency Spring Boot API and Manifest V3 Chrome Extension to provide real-time course data and intelligent recommendations.',
     techStack: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'Docker', 'Chrome Extension API'],
@@ -10,6 +11,7 @@ const projectDetails: { [key: string]: any } = {
   },
   'aws-landing-zone': {
     title: 'AWS Landing Zone',
+    github: 'https://github.com/AryanThodupunuri/aws-landing-zone',
     problem: 'Organizations need secure, compliant cloud foundations but lack standardized infrastructure as code.',
     solution: 'Created a modular Terraform-based AWS Landing Zone with automated security guardrails, CI/CD pipelines, and comprehensive testing.',
     techStack: ['Terraform', 'AWS', 'Terratest', 'CI/CD'],
@@ -17,6 +19,7 @@ const projectDetails: { [key: string]: any } = {
   },
   'extreme-weather-classification': {
     title: 'Extreme Weather Classification',
+    github: 'https://github.com/AryanThodupunuri/extreme-weather-classification',
     problem: 'Need for accurate, explainable AI models to detect catastrophic weather events from satellite imagery.',
     solution: 'Developed an HPC-accelerated computer vision pipeline comparing CNN architectures with Explainable AI techniques for model validation.',
     techStack: ['PyTorch', 'OpenCV', 'HPC', 'Grad-CAM', 'EfficientNetV2', 'MobileNetV2'],
@@ -24,6 +27,7 @@ const projectDetails: { [key: string]: any } = {
   },
   'food-ordering-system': {
     title: 'Food Ordering System',
+    github: 'https://github.com/AryanThodupunuri/food-ordering-system',
     problem: 'Traditional monolithic food ordering systems lack scalability and reliable event-driven communication.',
     solution: 'Implemented a microservices architecture with Domain-Driven Design, event sourcing, and the Outbox Pattern for reliable messaging.',
     techStack: ['Java', 'Spring Boot', 'Apache Kafka', 'Docker', 'PostgreSQL'],
@@ -38,6 +42,7 @@ const projectDetails: { [key: string]: any } = {
   },
   slacklite: {
     title: 'SlackLite',
+    github: 'https://github.com/AryanThodupunuri/SlackLite',
     problem: 'Need for low-latency, real-time communication platforms with secure file handling.',
     solution: 'Developed a messaging app with WebSocket-based real-time communication and secure file uploads to AWS S3.',
     techStack: ['React', 'FastAPI', 'MongoDB', 'WebSockets', 'AWS S3'],
@@ -75,6 +80,19 @@ const ProjectDetail = () => {
         </Link>
 
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-10">{project.title}</h1>
+
+        {project.github && (
+          <div className="mb-8">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            >
+              View on GitHub
+            </a>
+          </div>
+        )}
 
         <div className="space-y-10">
           <section>

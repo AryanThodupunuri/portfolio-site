@@ -57,10 +57,7 @@ const Badges: React.FC = () => {
 
         <div className="grid md:grid-cols-2 gap-5">
           {badges.map((badge, index) => (
-            <div
-              key={index}
-              className="group block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200"
-            >
+              <div key={index} className="group card">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 {badge.title}
               </h3>

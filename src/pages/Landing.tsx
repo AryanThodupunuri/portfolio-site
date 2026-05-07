@@ -10,7 +10,7 @@ const Landing = () => {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
       {/* Hero */}
-      <section className="max-w-5xl mx-auto px-6 pt-24 pb-20">
+        <section className="max-w-5xl mx-auto px-6 pt-24 pb-20 bg-gradient-to-br from-sky-50 via-white to-emerald-50 dark:from-slate-950 dark:via-slate-900 dark:to-cyan-950 rounded-[2rem] shadow-[0_40px_120px_-40px_rgba(14,165,233,0.35)]">
         <div className="flex flex-col md:flex-row md:items-start md:gap-14">
           {/* Profile picture */}
           <div className="flex-shrink-0 flex justify-center md:justify-start mb-8 md:mb-0">
@@ -74,28 +74,13 @@ const Landing = () => {
           </div>{/* end flex-1 */}
         </div>{/* end flex row */}
 
-        {/* Photo Highlights */}
-        <div className="grid gap-4 sm:grid-cols-3 mt-10 mb-14">
-          <div className="sm:col-span-3 lg:col-span-1 rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg bg-white dark:bg-gray-900">
-            <img src={profilePicture} alt="Profile" className="w-full h-72 object-cover" />
-            <div className="p-4">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Profile</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">A candid moment capturing the engineer behind the work.</p>
-            </div>
+        {/* Photo gallery */}
+          <div className="grid gap-4 md:grid-cols-2 mt-10 mb-14">
+          <div className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
+            <img src={uvaGameImage} alt="UVA game with friends" className="w-full h-80 object-cover" />
           </div>
-          <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg bg-white dark:bg-gray-900">
-            <img src={uvaGameImage} alt="UVA game with friends" className="w-full h-72 object-cover" />
-            <div className="p-4">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">UVA Game Day</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">A fun moment with friends at UVA, showing community and energy off campus.</p>
-            </div>
-          </div>
-          <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg bg-white dark:bg-gray-900">
-            <img src={boozAllenImage} alt="Booz Allen office with coworkers" className="w-full h-72 object-cover" />
-            <div className="p-4">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Booz Allen</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">In front of the Booz Allen office with last year’s teammates during my internship.</p>
-            </div>
+          <div className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
+            <img src={boozAllenImage} alt="Booz Allen office with coworkers" className="w-full h-80 object-cover" />
           </div>
         </div>
 
@@ -104,7 +89,7 @@ const Landing = () => {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6">About</h2>
           <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
             <p>
-              I'm a CS student at UVA headed to AWS this summer. Most of my time goes toward distributed systems and cloud infra — I find the problem of "how do you make this not fall over at 10x load" genuinely interesting, not just a resume line.
+              I'm a CS student at UVA headed to AWS this summer. Most of my time goes toward distributed systems and cloud infra - I find the problem of "how do you make this not fall over at 10x load" genuinely interesting, not just a resume line.
             </p>
             <p>
               Some things I've built: <span className="text-gray-900 dark:text-gray-200 font-medium">CourseCompass</span>, a Chrome Extension that ~25,000 UVA students use during registration; a <span className="text-gray-900 dark:text-gray-200 font-medium">Terraform AWS Landing Zone</span> with automated security guardrails; and a <span className="text-gray-900 dark:text-gray-200 font-medium">weather classification pipeline</span> on Rivanna HPC using PyTorch + Grad-CAM for explainability. I also break things in production and learn from it.

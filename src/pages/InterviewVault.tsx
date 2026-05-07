@@ -3,6 +3,11 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
+const approvedEmails: string[] = [
+  // Add approved user emails here to allow access to private notes.
+  // Example: 'recruiter@example.com', 'friend@example.com'
+];
+
 type InterviewNote = {
   id: string;
   company: string;
@@ -174,6 +179,7 @@ const interviewCompanies: InterviewCompany[] = [
 const InterviewVault = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const isApproved = Boolean(user && approvedEmails.includes(user.email ?? ''));
   const isAuthenticated = Boolean(user);
   const [section, setSection] = useState<Section>('interviews');
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -256,12 +262,20 @@ const InterviewVault = () => {
               Sign out
             </button>
           ) : (
-            <Link
-              to="/login"
-              className="inline-flex items-center justify-center px-5 py-3 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Sign in to view private notes
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/login?tab=signup"
+                className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Sign up
+              </Link>
+            </div>
           )}
         </div>
 
@@ -280,9 +294,17 @@ const InterviewVault = () => {
               <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Sign in to unlock private notes</span>
             )}
           </div>
+          <div className="card mb-5">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Visitors can browse the full company list without logging in. Private interview notes are protected, and I approve or deny access manually through Supabase authentication.
+            </p>
+            <p className="mt-2 text-xs text-gray-400">
+              To approve people, add their email to your Supabase user list or allowlist; to deny access, remove them or disable their account in Supabase.
+            </p>
+          </div>
           <div className="grid gap-5 sm:grid-cols-2">
             {interviewCompanies.map(company => (
-              <div key={company.company} className="rounded-3xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
+              <div key={company.company} className="card">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{company.company}</h3>
@@ -331,6 +353,7 @@ const InterviewVault = () => {
         </div>
 
         {isAuthenticated ? (
+          isApproved ? (
           <>
             {/* Tab Bar */}
             <div className="flex gap-2 mb-8">
@@ -396,7 +419,7 @@ const InterviewVault = () => {
                           <ul className="space-y-1.5">
                             {entry.questions.map((q, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                <span className="text-indigo-400 mt-0.5 shrink-0">—</span>
+                                <span className="text-indigo-400 mt-0.5 shrink-0">•</span>
                                 {q}
                               </li>
                             ))}
@@ -503,7 +526,7 @@ const InterviewVault = () => {
                           <ul className="space-y-1.5">
                             {entry.resources.map((r, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                <span className="text-indigo-400 mt-0.5 shrink-0">—</span>
+                                <span className="text-indigo-400 mt-0.5 shrink-0">•</span>
                                 {r}
                               </li>
                             ))}
@@ -516,6 +539,23 @@ const InterviewVault = () => {
               </div>
             )}
           </>
+          ) : (
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Access pending approval</h3>
+              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                You are signed in, but your account still needs approval before private interview notes are visible.
+                I approve or deny users in the Supabase dashboard by allowing or removing their email.
+              </p>
+              <div className="mt-6">
+                <Link
+                  to="/login"
+                  className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                >
+                  Manage sign-in
+                </Link>
+              </div>
+            </div>
+          )
         ) : null}
 
         <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">

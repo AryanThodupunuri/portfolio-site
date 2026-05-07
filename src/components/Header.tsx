@@ -20,9 +20,9 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+  <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
       <nav className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="text-base font-semibold text-gray-900 dark:text-white tracking-tight">
+        <Link to="/" className="text-base font-semibold tracking-tight bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">
           Aryan Thodupunuri
         </Link>
 
@@ -34,7 +34,7 @@ const Header = () => {
               to={to}
               className={`text-sm font-medium transition-colors duration-200 ${
                 location.pathname === to
-                  ? 'text-gray-900 dark:text-white'
+                  ? 'text-indigo-700 dark:text-cyan-300'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >

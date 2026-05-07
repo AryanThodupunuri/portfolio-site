@@ -114,7 +114,7 @@ const SkillTracker: React.FC = () => {
             return (
               <div
                 key={index}
-                className="group block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200"
+                className="group card"
               >
                 <div className="mb-4">
                   <div className="flex items-center justify-between gap-4">

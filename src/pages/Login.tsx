@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect, type FormEvent } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 type Tab = 'signin' | 'signup';
@@ -7,12 +7,20 @@ type Tab = 'signin' | 'signup';
 const Login = () => {
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [tab, setTab] = useState<Tab>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const nextTab = searchParams.get('tab');
+    if (nextTab === 'signup') {
+      setTab('signup');
+    }
+  }, [location.search]);
 
   // If already logged in, redirect home
   if (user) {
