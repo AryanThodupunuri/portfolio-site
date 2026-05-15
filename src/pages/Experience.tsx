@@ -12,13 +12,13 @@ const experiences: ExperienceItem[] = [
   {
     company: 'Amazon Web Services',
     role: 'Software Development Engineer Intern',
-    period: 'Summer 2026',
+    period: 'May 2026 – Present',
     location: 'Arlington, VA',
-    status: 'Incoming',
+    status: 'Current',
     badgeStyle: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
     bullets: [
-      'Selected through Amazon’s competitive SDE internship process to join AWS’s Generative AI & Data Acceleration organization.',
-      'Will work on production-scale systems delivering cloud infrastructure and ML services to enterprise customers.',
+      "Joined AWS's Generative AI & Data Acceleration organization through Amazon's competitive SDE internship process.",
+      'Working on production-scale systems delivering cloud infrastructure and ML services to enterprise customers.',
     ],
   },
   {
@@ -89,12 +89,12 @@ const Experience = () => {
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 mb-8">Experience</p>
 
-        <div className="relative pl-8">
+        <div className="relative pl-10">
           <div className="absolute left-2 top-0 bottom-0 w-px bg-slate-200 dark:bg-slate-800"></div>
 
           {experiences.map((exp, index) => (
             <div key={index} className="relative mb-10">
-              <div className="absolute -left-3 top-2 h-3 w-3 rounded-full bg-indigo-600 ring-8 ring-white dark:ring-slate-950"></div>
+              <div className="absolute -left-4 top-2 h-3 w-3 rounded-full bg-indigo-600 ring-4 ring-white dark:ring-slate-950"></div>
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="min-w-0">
                   <p className="text-xl font-semibold text-slate-900 dark:text-white">{exp.company}</p>

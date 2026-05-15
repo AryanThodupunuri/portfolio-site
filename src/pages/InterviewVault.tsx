@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const approvedEmails: string[] = [
@@ -59,6 +59,7 @@ type InterviewCompany = {
   season: string;
   outcome: string;
   rating: number;
+  salary?: string;
   employmentType?: string;
   noteSummary: string;
 };
@@ -71,6 +72,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 5,
+    salary: '$55/hr',
     noteSummary: 'Selective technical process focused on problem-solving, leadership principles, and ownership at scale.',
   },
   {
@@ -89,6 +91,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
+    salary: '$42/hr',
     noteSummary: 'Consulting-oriented process focused on communication, business context, and applying technical skills to client work.',
   },
   {
@@ -98,6 +101,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
+    salary: '$35/hr',
     noteSummary: 'Balanced technical and communication-focused interviews in a financial services engineering environment.',
   },
   {
@@ -107,6 +111,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
+    salary: '$37/hr',
     noteSummary: 'Behavioral and experience-focused process with some technical discussion around projects and cloud experience.',
   },
   {
@@ -116,6 +121,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 5,
+    salary: '$45/hr',
     noteSummary: 'SWE-aligned interviews centered on technical projects, backend experience, and engineering decision-making.',
   },
   {
@@ -125,6 +131,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 4,
+    salary: '$41/hr',
     noteSummary: 'Structured process with behavioral, technical, and project-based discussion on enterprise engineering work.',
   },
   {
@@ -143,6 +150,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2025',
     outcome: 'Offer',
     rating: 5,
+    salary: '$35/hr',
     employmentType: 'Hybrid',
     noteSummary: 'Project-focused and communication-heavy interviews for consulting work, highlighting AWS and full-stack background.',
   },
@@ -153,6 +161,7 @@ const interviewCompanies: InterviewCompany[] = [
     season: 'Summer 2025',
     outcome: 'Offer',
     rating: 4,
+    salary: '$25/hr',
     noteSummary: 'Conversational process centered on background, projects, and ability to learn quickly within a consulting team.',
   },
   {
@@ -180,8 +189,7 @@ const getOutcomeClass = (outcome: string) => {
 };
 
 const InterviewVault = () => {
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const isApproved = Boolean(user && approvedEmails.includes(user.email ?? ''));
   const isAuthenticated = Boolean(user);
   const [section, setSection] = useState<Section>('interviews');
@@ -227,11 +235,6 @@ const InterviewVault = () => {
     });
   }, [user]);
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
   const toggle = (id: string) => setExpandedId(prev => prev === id ? null : id);
 
   return (
@@ -239,69 +242,17 @@ const InterviewVault = () => {
       <div className="max-w-4xl mx-auto px-4 py-12">
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg">🔒</span>
-              <span className="text-xs font-semibold uppercase tracking-widest text-indigo-500">Interview Vault</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Interview Vault</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
-              {isAuthenticated
-                ? 'You can see the interview list. Private notes appear only after your account is approved.'
-                : 'Anyone can browse the interview list. Sign in to request access to private notes after approval.'}
-            </p>
-            {!isAuthenticated && (
-              <p className="mt-2 text-sm text-gray-400 dark:text-gray-500">
-                Visitors can see the full interview company list. Private round notes and outcomes require signing in.
-              </p>
-            )}
-          </div>
-          {isAuthenticated ? (
-            <button
-              onClick={handleSignOut}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-            >
-              Sign out
-            </button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                Sign in
-              </Link>
-              <Link
-                to="/login?tab=signup"
-                className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Sign up
-              </Link>
-            </div>
-          )}
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Interviews</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 max-w-2xl">
+            {isAuthenticated
+              ? 'You\'re signed in — you can see my notes for each company below.'
+              : 'Browse every company I\'ve interviewed with. Sign in to unlock my notes for each one.'}
+          </p>
         </div>
 
-        {/* Public companies list */}
+        {/* Companies list */}
         <div className="mb-12">
-          <div className="flex items-center justify-between gap-4 mb-4">
-            <div>
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
-                Interviewed Companies
-              </h2>
-              <p className="mt-2 text-gray-500 dark:text-gray-400 max-w-2xl">
-                A complete list of companies I interviewed with, available for anyone visiting this page.
-              </p>
-            </div>
-            {!isAuthenticated && (
-              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Sign in to unlock private notes</span>
-            )}
-          </div>
-          <div className="card mb-5">
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Visitors can browse the full company list without logging in. Private notes are protected — once you sign in, I can approve your account and then the notes tabs will become available.
-            </p>
-          </div>
           <div className="grid gap-5 sm:grid-cols-2">
             {interviewCompanies.map(company => (
               <div key={company.company} className="card">
@@ -309,38 +260,40 @@ const InterviewVault = () => {
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{company.company}</h3>
                     <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{company.role}</p>
-                    <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{company.location}</p>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{company.location}</p>
                   </div>
-                  <div className="text-right text-xs text-gray-400 dark:text-gray-500">
+                  <div className="text-right text-xs text-gray-400 dark:text-gray-500 shrink-0">
                     <div>{company.season}</div>
                     {company.employmentType && <div className="mt-1">{company.employmentType}</div>}
                   </div>
                 </div>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${getOutcomeClass(company.outcome)}`}>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${getOutcomeClass(company.outcome)}`}>
                     {company.outcome}
                   </span>
+                  {company.salary && (
+                    <span className="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1 text-xs font-semibold text-gray-600 dark:text-gray-300">
+                      {company.salary}
+                    </span>
+                  )}
                 </div>
 
-                <div className="mt-4 flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Rating:</span>
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: 5 }, (_, idx) => (
-                      <span key={idx} className={idx < company.rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-700'}>★</span>
-                    ))}
-                  </div>
+                <div className="mt-3 flex items-center gap-1">
+                  {Array.from({ length: 5 }, (_, idx) => (
+                    <span key={idx} className={idx < company.rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-700'}>★</span>
+                  ))}
                 </div>
 
-                <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                  {company.noteSummary}
-                </p>
+                {isAuthenticated && (
+                  <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-gray-800 pt-4">
+                    {company.noteSummary}
+                  </p>
+                )}
                 {!isAuthenticated && (
-                  <div className="mt-5">
-                    <Link to="/login" className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
-                      Sign in to view private notes
-                    </Link>
-                  </div>
+                  <p className="mt-4 text-xs text-gray-400 dark:text-gray-500 italic">
+                    Sign in to see my notes on this process.
+                  </p>
                 )}
               </div>
             ))}

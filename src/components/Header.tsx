@@ -13,6 +13,7 @@ const Header = () => {
     { to: '/', label: 'Home' },
     { to: '/experience', label: 'Experience' },
     { to: '/projects', label: 'Projects' },
+    { to: '/vault', label: 'My Interviews' },
     { to: '/skills', label: 'Skill Tracker' },
     { to: '/oss', label: 'Open Source' },
     { to: '/badges', label: 'Badges' },
@@ -43,33 +44,23 @@ const Header = () => {
           ))}
 
           <div className="flex items-center gap-3">
-            <Link
-              to="/login"
-              className="text-sm font-medium text-indigo-600 dark:text-cyan-300 hover:text-indigo-700 dark:hover:text-cyan-200 transition-colors"
-            >
-              Sign in
-            </Link>
-            {user ? (
-              <>
-                <Link
-                  to="/vault"
-                  className={`flex items-center gap-1.5 text-sm font-medium transition-colors duration-200 ${
-                    location.pathname === '/vault'
-                      ? 'text-indigo-600 dark:text-indigo-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400'
-                  }`}
-                >
-                  <span>🔒</span> Interview Vault
-                </Link>
-                <button
-                  onClick={signOut}
-                  className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                  title={`Sign out (${user.email})`}
-                >
-                  Sign out
-                </button>
-              </>
-            ) : null}
+            {!user && (
+              <Link
+                to="/login"
+                className="text-sm font-medium text-indigo-600 dark:text-cyan-300 hover:text-indigo-700 dark:hover:text-cyan-200 transition-colors"
+              >
+                Sign in
+              </Link>
+            )}
+            {user && (
+              <button
+                onClick={signOut}
+                className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                title={`Sign out (${user.email})`}
+              >
+                Sign out
+              </button>
+            )}
           </div>
 
           <button
@@ -111,19 +102,15 @@ const Header = () => {
               {label}
             </Link>
           ))}
-          <Link to="/login" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
-            Sign in
-          </Link>
           {user ? (
-            <>
-              <Link to="/vault" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
-                🔒 Vault
-              </Link>
-              <button onClick={() => { signOut(); setMenuOpen(false); }} className="text-sm text-left text-gray-500 dark:text-gray-400">
-                Sign out
-              </button>
-            </>
-          ) : null}
+            <button onClick={() => { signOut(); setMenuOpen(false); }} className="text-sm text-left text-gray-500 dark:text-gray-400">
+              Sign out
+            </button>
+          ) : (
+            <Link to="/login" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+              Sign in
+            </Link>
+          )}
         </div>
       )}
     </header>

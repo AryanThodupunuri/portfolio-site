@@ -2,7 +2,7 @@ import React from 'react';
 
 const badges = [
   {
-    title: 'AWS Certified Solutions Architect',
+    title: 'AWS Certified Solutions Architect - Associate',
     description: 'Demonstrated expertise in designing and deploying scalable systems on AWS.',
     link: 'https://www.credly.com/badges/f4d46208-e30b-442f-9cb1-2ab5ef108e43/public_url',
     cta: 'View Credential →',
@@ -32,8 +32,14 @@ const badges = [
     cta: '',
   },
   {
-    title: 'AWS Certified Developer Associate (In Progress)',
+    title: 'AWS Certified Developer - Associate (In Progress)',
     description: 'Currently preparing for the AWS Certified Developer Associate certification.',
+    link: '',
+    cta: '',
+  },
+  {
+    title: 'AWS Certified AI Practitioner (In Progress)',
+    description: 'Currently preparing for the AWS Certified AI Practitioner certification.',
     link: '',
     cta: '',
   },
