@@ -89,16 +89,16 @@ const Landing = () => {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6">About</h2>
           <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
             <p>
-              Ever notice how the biggest challenge is rarely the code itself? At UVA, I keep finding that the real work is in making systems behave when people stop being polite about how they use them.
+              Hey, I'm Aryan, a CS student at UVA who's spent the last few years getting deep into distributed systems, AI, and cloud infrastructure. I've worked across the stack at Booz Allen building cloud-native platforms with React, Flask, and AWS, done ML research at UVA's Link Lab training CNN/RNN models on real environmental data, and this summer I'm interning at AWS on the GenAI Acceleration team building a RAG-based coding assistant that helps AI handle large, domain-specific codebases without losing context or hallucinating engine APIs.
             </p>
             <p>
-              Last semester, I spent more time tuning registration scraping and rate limiting than I did on UI polish for CourseCompass. That project now helps a lot of students find open classes faster, and the part I care about is that it actually survives traffic spikes.
+              On the project side, I've been building things I actually wanted to exist. CloudSentinel started because I got frustrated with how opaque AWS cost management is, so I built a multi-agent, RAG-powered AI platform that detects cloud spend anomalies, runs optimization analysis, and turns findings into structured remediation workflows, all without touching your infrastructure. CourseCompass came from the same place, I wanted better data when picking classes at UVA, so I built a distributed Spring Boot system that aggregates professor and workload data from multiple sources using concurrent API calls and a PostgreSQL caching layer, then injects it directly into the portals 25,000+ students use to pick classes. I also built an event-driven food ordering backend with Kafka, Spring Boot, and Docker because I wanted to actually understand how microservices handle failure and scale under load, not just read about it.
             </p>
             <p>
-              I also built a reusable AWS landing zone with secure defaults and CI checks, and a weather model on Rivanna that had to fit in containers and still give reliable output. The work is never as clean as the plan, but when it does hold together, it feels worth the messy middle.
+              Outside of school I play basketball, follow sports probably more than I should, and spend a lot of time with my fraternity. I'm into exploring new hiking trails, always on the hunt for good food, and I follow the startup and VC world pretty closely, I find the business side of tech just as interesting as the engineering side.
             </p>
             <p>
-              I try to write technology that can keep going after I stop looking at it. So I ask questions, I test the edge cases, and I keep the story of the user close enough that it shapes the next change.
+              Feel free to reach out, I'm always happy to connect with people working on interesting problems.
             </p>
           </div>
         </div>

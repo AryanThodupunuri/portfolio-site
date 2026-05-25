@@ -16,6 +16,14 @@ const projects = [
 		image: courseCompassImage,
 	},
 	{
+		id: 'cloud-sentinel',
+		title: 'CloudSentinel',
+		description: 'CloudSentinel — an agentic AI-powered AWS FinOps platform that analyzes cloud spend, detects anomalies, and generates human-reviewed remediation workflows.',
+		tags: ['Python', 'FastAPI', 'AWS', 'RAG', 'LLM', 'ChromaDB', 'Groq'],
+		github: 'https://github.com/AryanThodupunuri/cloud-sentinel',
+		image: awsLandingZoneImage,
+	},
+	{
 		id: 'aws-landing-zone',
 		title: 'AWS Landing Zone',
 		description: 'Modular Terraform AWS landing zone with automated security guardrails, CI tests, and reusable infrastructure components for safe deployments.',
