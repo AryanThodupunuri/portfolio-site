@@ -18,8 +18,8 @@ const projects = [
 	{
 		id: 'cloud-sentinel',
 		title: 'CloudSentinel',
-		description: 'CloudSentinel — an agentic AI-powered AWS FinOps platform that analyzes cloud spend, detects anomalies, and generates human-reviewed remediation workflows.',
-		tags: ['Python', 'FastAPI', 'AWS', 'RAG', 'LLM', 'ChromaDB', 'Groq'],
+		description: 'Agentic AI platform for AWS FinOps. Multi-agent backend with dedicated agents for cost ingestion, anomaly detection, Compute Optimizer analysis, idle EC2 detection, and remediation planning — powered by Groq LLM and a RAG-based cloud assistant backed by ChromaDB.',
+		tags: ['Python', 'FastAPI', 'AWS', 'RAG', 'Groq LLM', 'ChromaDB', 'PostgreSQL'],
 		github: 'https://github.com/AryanThodupunuri/cloud-sentinel',
 		image: awsLandingZoneImage,
 	},

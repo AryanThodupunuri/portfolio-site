@@ -40,7 +40,7 @@ const Landing = () => {
             </h1>
             <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mb-8 leading-relaxed">
               <AnimatedText
-                texts={["CS student at UVA · Incoming SDE Intern at AWS.", "I like building things that actually work at scale.", "Backends, infra, the occasional ML experiment."]}
+                texts={["CS student at UVA · Solutions Architect Intern at AWS.", "I like building things that actually work at scale.", "Backends, infra, the occasional ML experiment."]}
                 type="fade"
                 interval={2600}
                 className="block"
@@ -89,16 +89,16 @@ const Landing = () => {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6">About</h2>
           <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
             <p>
-              Hey, I'm Aryan, a CS student at UVA who's spent the last few years getting deep into distributed systems, AI, and cloud infrastructure. I've worked across the stack at Booz Allen building cloud-native platforms with React, Flask, and AWS, done ML research at UVA's Link Lab training CNN/RNN models on real environmental data, and this summer I'm interning at AWS on the GenAI Acceleration team building a RAG-based coding assistant that helps AI handle large, domain-specific codebases without losing context or hallucinating engine APIs.
+              Hey, I'm Aryan — a CS student at UVA who's spent the last few years getting deep into cloud infrastructure, distributed systems, and AI. I've worked across the stack at Booz Allen building cloud-native platforms with React, Flask, and AWS, done ML research at UVA's Link Lab, and this summer I'm interning at AWS as a Solutions Architect on the GenAI and LLMs for Startups team — exploring how large language models handle context at scale in real-world codebases.
             </p>
             <p>
-              On the project side, I've been building things I actually wanted to exist. CloudSentinel started because I got frustrated with how opaque AWS cost management is, so I built a multi-agent, RAG-powered AI platform that detects cloud spend anomalies, runs optimization analysis, and turns findings into structured remediation workflows, all without touching your infrastructure. CourseCompass came from the same place, I wanted better data when picking classes at UVA, so I built a distributed Spring Boot system that aggregates professor and workload data from multiple sources using concurrent API calls and a PostgreSQL caching layer, then injects it directly into the portals 25,000+ students use to pick classes. I also built an event-driven food ordering backend with Kafka, Spring Boot, and Docker because I wanted to actually understand how microservices handle failure and scale under load, not just read about it.
+              On the project side, I've been building things I actually wanted to exist. CloudSentinel started because I got frustrated with how opaque AWS cost management is — it's an agentic AI platform that detects cloud spend anomalies, runs optimization analysis, and turns findings into structured remediation workflows, all without touching your infrastructure. CourseCompass came from the same place — I wanted better data when picking classes at UVA, so I built a distributed system that injects professor ratings and workload analytics directly into the course portals 25,000+ students use every semester. I've also spent a lot of time on backend fundamentals — built a full event-driven food ordering system with Kafka, Spring Boot, and Docker just to really understand how microservices fit together at scale.
             </p>
             <p>
-              Outside of school I play basketball, follow sports probably more than I should, and spend a lot of time with my fraternity. I'm into exploring new hiking trails, always on the hunt for good food, and I follow the startup and VC world pretty closely, I find the business side of tech just as interesting as the engineering side.
+              Outside of school I'm pretty active — I play basketball, hike when I can, and spend a lot of time with my fraternity. I think the best engineers are the ones who stay curious about things outside of tech too.
             </p>
             <p>
-              Feel free to reach out, I'm always happy to connect with people working on interesting problems.
+              Always down to connect.
             </p>
           </div>
         </div>

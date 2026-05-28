@@ -11,14 +11,14 @@ type ExperienceItem = {
 const experiences: ExperienceItem[] = [
   {
     company: 'Amazon Web Services',
-    role: 'Software Development Engineer Intern',
+    role: 'Solutions Architect Intern',
     period: 'May 2026 – Present',
     location: 'Arlington, VA',
     status: 'Current',
     badgeStyle: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
     bullets: [
-      "Joined AWS's Generative AI & Data Acceleration organization through Amazon's competitive SDE internship process.",
-      'Working on production-scale systems delivering cloud infrastructure and ML services to enterprise customers.',
+      "Joined AWS's GenAI and LLMs for Startups team as a Solutions Architect Intern, focused on the intersection of large language models and real-world software engineering.",
+      'Exploring how AI coding tools handle context at scale — specifically the challenge of keeping generated code architecturally grounded in large, evolving codebases.',
     ],
   },
   {
