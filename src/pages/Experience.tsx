@@ -18,7 +18,7 @@ const experiences: ExperienceItem[] = [
     badgeStyle: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
     bullets: [
       "Joined AWS's GenAI and LLMs for Startups team as a Solutions Architect Intern, focused on the intersection of large language models and real-world software engineering.",
-      'Exploring how AI coding tools handle context at scale — specifically the challenge of keeping generated code architecturally grounded in large, evolving codebases.',
+      'Exploring how AI coding tools maintain context at scale, specifically the challenge of keeping generated code architecturally grounded in large, evolving codebases.',
     ],
   },
   {
