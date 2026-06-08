@@ -67,13 +67,22 @@ type InterviewCompany = {
 const interviewCompanies: InterviewCompany[] = [
   {
     company: 'AWS',
-    role: 'Software Development Engineer Intern',
+    role: 'Solutions Architect Intern',
     location: 'Arlington, VA',
     season: 'Summer 2026',
     outcome: 'Offer',
     rating: 5,
     salary: '$55/hr',
-    noteSummary: 'Selective technical process focused on problem-solving, leadership principles, and ownership at scale.',
+    noteSummary: 'Selective technical process focused on cloud architecture, leadership principles, and ownership at scale.',
+  },
+  {
+    company: 'Google',
+    role: 'Software Engineering Intern',
+    location: 'Mountain View, CA',
+    season: 'Summer 2026',
+    outcome: 'Rejected at Team Matching',
+    rating: 4,
+    noteSummary: 'Passed technical phone screens and coding rounds; did not receive a host match after clearing the interview bar.',
   },
   {
     company: 'Barclays',
@@ -246,7 +255,7 @@ const InterviewVault = () => {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Interviews</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 max-w-2xl">
             {isAuthenticated
-              ? 'You\'re signed in — you can see my notes for each company below.'
+              ? 'You\'re signed in. You can see my notes for each company below.'
               : 'Browse every company I\'ve interviewed with. Sign in to unlock my notes for each one.'}
           </p>
         </div>
