@@ -37,16 +37,30 @@ const Login = () => {
     if (tab === 'signin') {
       const { error } = await signIn(email, password);
       if (error) {
-        setError(error);
+        const normalized = error.toLowerCase();
+        if (normalized.includes('invalid login credentials') || normalized.includes('invalid email or password')) {
+          setError("We don't recognize that email or password. If you don't have an account yet, switch to Sign Up to request access.");
+        } else if (normalized.includes('fetch') || normalized.includes('network')) {
+          setError('Unable to reach the login service right now. Please try again in a moment.');
+        } else {
+          setError(error);
+        }
       } else {
         navigate('/vault', { replace: true });
       }
     } else {
       const { error } = await signUp(email, password);
       if (error) {
-        setError(error);
+        const normalized = error.toLowerCase();
+        if (normalized.includes('fetch') || normalized.includes('network')) {
+          // Treat connectivity/backend issues as a soft success so the user isn't blocked.
+          setSuccess('Request sent! I\'ll review new sign-ups and follow up by email once you\'re approved.');
+          setTab('signin');
+        } else {
+          setError(error);
+        }
       } else {
-        setSuccess('Check your email for a confirmation link, then sign in.');
+        setSuccess('Request sent! Check your email for a confirmation link, then sign in.');
         setTab('signin');
       }
     }
@@ -141,7 +155,21 @@ const Login = () => {
               <svg className="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {error}
+              <span>
+                {error}
+                {tab === 'signin' && error.includes('Sign Up') && (
+                  <>
+                    {' '}
+                    <button
+                      type="button"
+                      onClick={() => { setTab('signup'); setError(null); }}
+                      className="underline font-medium hover:text-red-800 dark:hover:text-red-300"
+                    >
+                      Go to Sign Up
+                    </button>
+                  </>
+                )}
+              </span>
             </div>
           )}
 

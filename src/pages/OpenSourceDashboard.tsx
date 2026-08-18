@@ -23,9 +23,21 @@ const OpenSourceDashboard: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     Promise.all([
-      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`).then(r => r.json()),
-      fetch(`https://api.github.com/users/${GITHUB_USERNAME}`).then(r => r.json()),
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`, { signal: controller.signal })
+        .then(r => {
+          if (!r.ok) throw new Error(`GitHub API returned ${r.status}`);
+          return r.json();
+        }),
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}`, { signal: controller.signal })
+        .then(r => {
+          if (!r.ok) throw new Error(`GitHub API returned ${r.status}`);
+          return r.json();
+        }),
     ])
       .then(([reposData, profileData]) => {
         if (Array.isArray(reposData)) {
@@ -42,9 +54,15 @@ const OpenSourceDashboard: React.FC = () => {
         setLoading(false);
       })
       .catch(() => {
-        setError('Failed to load GitHub data.');
+        setError('Live GitHub data is temporarily unavailable (rate limit or network issue). You can still view my profile directly below.');
         setLoading(false);
-      });
+      })
+      .finally(() => clearTimeout(timeout));
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -73,7 +91,17 @@ const OpenSourceDashboard: React.FC = () => {
       {loading ? (
         <div className="text-gray-400 dark:text-gray-500">Loading GitHub data...</div>
       ) : error ? (
-        <div className="text-red-500 dark:text-red-400">{error}</div>
+        <div className="flex flex-col items-center gap-4 max-w-md text-center">
+          <div className="text-sm text-gray-500 dark:text-gray-400">{error}</div>
+          <a
+            href={`https://github.com/${GITHUB_USERNAME}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:bg-gray-700 dark:hover:bg-gray-100 rounded-md shadow-sm transition-colors"
+          >
+            Open GitHub Profile
+          </a>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
           {repos.map(repo => (

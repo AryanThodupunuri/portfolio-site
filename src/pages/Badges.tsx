@@ -4,8 +4,8 @@ const badges = [
   {
     title: 'AWS Certified Solutions Architect - Associate',
     description: 'Demonstrated expertise in designing and deploying scalable systems on AWS.',
-    link: '',
-    cta: '',
+    link: 'https://www.credly.com/badges/f4d46208-e30b-442f-9cb1-2ab5ef108e43/public_url',
+    cta: 'View Credential →',
   },
   {
     title: 'AWS Certified Machine Learning Engineer - Associate',
@@ -28,8 +28,8 @@ const badges = [
   {
     title: 'AWS Certified Cloud Practitioner',
     description: 'Validated foundational knowledge of AWS Cloud concepts and services.',
-    link: '',
-    cta: '',
+    link: 'https://www.credly.com/badges/652f9f8c-ee50-4214-bcd9-4610ef1df7fb/public_url',
+    cta: 'View Credential →',
   },
   {
     title: 'AT&T Tech Academy Graduate',

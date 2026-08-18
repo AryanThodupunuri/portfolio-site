@@ -66,8 +66,14 @@ const SkillTracker: React.FC = () => {
 
   useEffect(() => {
     // Uses the public alfa-leetcode-api proxy (no auth needed, public profile only)
-    fetch(`https://alfa-leetcode-api.onrender.com/${LEETCODE_USERNAME}/solved`)
-      .then(res => res.json())
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    fetch(`https://alfa-leetcode-api.onrender.com/${LEETCODE_USERNAME}/solved`, { signal: controller.signal })
+      .then(res => {
+        if (!res.ok) throw new Error(`LeetCode API returned ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         if (data && typeof data.solvedProblem !== 'undefined' && Array.isArray(data.acSubmissionNum) && Array.isArray(data.totalSubmissionNum)) {
           const totalSubmissions = data.totalSubmissionNum.reduce((sum: number, item: any) => sum + (item.submissions ?? 0), 0);
@@ -88,7 +94,13 @@ const SkillTracker: React.FC = () => {
         }
         setLcLoading(false);
       })
-      .catch(() => { setLcError(true); setLcLoading(false); });
+      .catch(() => { setLcError(true); setLcLoading(false); })
+      .finally(() => clearTimeout(timeout));
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
   }, []);
 
   return (
