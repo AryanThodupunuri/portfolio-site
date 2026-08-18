@@ -11,14 +11,15 @@ type ExperienceItem = {
 const experiences: ExperienceItem[] = [
   {
     company: 'Amazon Web Services',
-    role: 'Solutions Architect Intern',
-    period: 'May 2026 – Present',
+    role: 'Solutions Architect Intern, Forward Deployed Engineering',
+    period: 'May 2026 – Aug 2026',
     location: 'Arlington, VA',
-    status: 'Current',
+    status: 'Internship',
     badgeStyle: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
     bullets: [
-      "Joined AWS's GenAI and LLMs for Startups team as a Solutions Architect Intern, focused on the intersection of large language models and real-world software engineering.",
-      'Exploring how AI coding tools maintain context at scale, specifically the challenge of keeping generated code architecturally grounded in large, evolving codebases.',
+      'Architected a multi-tenant context service for AI coding agents, exposing REST APIs over source code, dependency graphs, runtime state, and team conventions, serving context across 250K+ file repositories at sub-150ms p95 retrieval latency.',
+      'Built event-driven ingestion microservices across Lambda, S3, SQS, DynamoDB, and OpenSearch, processing 1M+ code changes with incremental indexing and content-addressed caching to cut redundant computation 88% and indexing costs 63%.',
+      'Developed an offline evaluation and observability framework across 25K+ coding tasks, benchmarking retrieval strategies, detecting context regressions with 99.4% precision, and integrating automated testing into the CI/CD release gate.',
     ],
   },
   {
@@ -28,10 +29,9 @@ const experiences: ExperienceItem[] = [
     location: 'McLean, VA',
     status: 'Internship',
     bullets: [
-      'Architected a cloud-native supplier intelligence platform using React, Flask, AWS, and PostgreSQL to centralize 10K+ vendor records.',
-      'Built backend REST APIs and NLP pipelines with spaCy to parse PDF contracts and extract supplier metadata into searchable records.',
-      'Engineered a production RAG pipeline with vector embeddings and semantic search, reducing document review time to ~5 seconds with sub-second p99 latency.',
-      'Designed a PyTest regression harness with synthetic fixtures to validate contract parsing and improve extraction accuracy to 90%+, cutting QA overhead by 30%.',
+      'Rebuilt a supplier intelligence REST search service in Flask and PostgreSQL using vector embeddings, query planning, and precomputed indexes, reducing p99 latency from 4.6s to 140ms across 12M+ searchable document fragments.',
+      'Designed a fault-tolerant contract ingestion engine in Python/C++ with idempotent workers, checkpointing, and dead-letter recovery, processing 500K+ PDFs weekly with 99.99% completion while eliminating duplicate writes across distributed jobs.',
+      'Built a distributed indexing service with PostgreSQL data modeling and semantic embeddings, transforming contract data into normalized supplier entities while sustaining 25K+ records per minute and reducing reprocessing 84%.',
     ],
   },
   {
@@ -41,8 +41,8 @@ const experiences: ExperienceItem[] = [
     location: 'Charlottesville, VA',
     status: 'Internship',
     bullets: [
-      'Built high-throughput ingestion pipelines processing 50K+ daily events from Spotify and Ticketmaster REST APIs for artist analytics.',
-      'Optimized backend performance by 35% through a custom Redis caching layer and AWS load balancing for high-traffic artist data flows.',
+      'Built an event-driven Python ingestion platform processing 5M+ daily records from Spotify, Apple Music, and Ticketmaster APIs, adding Kafka-style partitioning, idempotent retries, and deduplication to sustain 20K+ events per second during peak traffic.',
+      'Engineered Redis-backed caching and autoscaled AWS microservices with EC2, Docker, and RDS, cutting p99 API latency 68%.',
     ],
   },
   {
@@ -52,8 +52,8 @@ const experiences: ExperienceItem[] = [
     location: 'Charlottesville, VA',
     status: 'Internship',
     bullets: [
-      'Implemented an RNN layer in TensorFlow to augment flood forecasting models, achieving 95% faster runtime and 15% higher accuracy than the baseline.',
-      'Containerized the inference stack with Docker and exposed secure REST APIs consumed by 100+ users through Plotly Dash dashboards.',
+      'Built a distributed geospatial forecasting pipeline in Python and TensorFlow processing 10M+ sensor observations, partitioning workloads across parallel workers and caching features to cut training time 94% and increase experiment throughput 18×.',
+      'Designed a fault-tolerant model serving API on AWS EC2 with Docker, Redis, REST APIs, and CI/CD sustaining 2K+ prediction requests per second at sub-100ms p95 latency with automated health checks and zero-downtime rollouts.',
     ],
   },
   {
