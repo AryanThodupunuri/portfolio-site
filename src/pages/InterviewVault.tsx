@@ -246,6 +246,25 @@ const InterviewVault = () => {
 
   const toggle = (id: string) => setExpandedId(prev => prev === id ? null : id);
 
+  if (!isAuthenticated) {
+    return (
+      <main className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">My Interviews</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+            This page is private. Sign in to view my interview history, companies, and notes.
+          </p>
+          <Link
+            to="/login"
+            className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-sm"
+          >
+            Sign in
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-4xl mx-auto px-4 py-12">
@@ -254,9 +273,7 @@ const InterviewVault = () => {
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Interviews</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 max-w-2xl">
-            {isAuthenticated
-              ? 'You\'re signed in. You can see my notes for each company below.'
-              : 'Browse every company I\'ve interviewed with. Sign in to unlock my notes for each one.'}
+            Every company I've interviewed with, along with my notes on each process.
           </p>
         </div>
 
