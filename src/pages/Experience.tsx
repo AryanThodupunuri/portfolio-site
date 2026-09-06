@@ -56,18 +56,6 @@ const experiences: ExperienceItem[] = [
       'Designed a fault-tolerant model serving API on AWS EC2 with Docker, Redis, REST APIs, and CI/CD sustaining 2K+ prediction requests per second at sub-100ms p95 latency with automated health checks and zero-downtime rollouts.',
     ],
   },
-  {
-    company: 'Palantir',
-    role: 'Launch Program Participant',
-    period: 'March 2024',
-    location: 'Remote',
-    status: 'Launch Program',
-    badgeStyle: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
-    bullets: [
-      'Completed Palantir Launch Program in March 2024, focused on rapid product development, enterprise data workflows, and collaborative problem solving.',
-      'Worked through simulations of data-driven decision making and prototyped scalable visualizations for complex operational use cases.',
-    ],
-  },
 ];
 
 const education = {
