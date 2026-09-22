@@ -88,10 +88,10 @@ const Landing = () => {
               On the project side, I've been building things I actually wanted to exist. CloudSentinel started because I got frustrated with how opaque AWS cost management is. It's an agentic AI platform that detects cloud spend anomalies, runs optimization analysis, and turns findings into structured remediation workflows, all without touching your infrastructure. CourseCompass came from the same place. I wanted better data when picking classes at UVA, so I built a distributed system that injects professor ratings and workload analytics directly into the course portals 25,000+ students use every semester. I've also spent a lot of time on backend fundamentals. I built a full event-driven food ordering system with Kafka, Spring Boot, and Docker just to really understand how microservices fit together at scale.
             </p>
             <p>
-              Outside of school I'm pretty active. I play basketball, hike when I can, and spend a lot of time with my friends and family. 
+              When I'm away from my computer, I’m usually playing basketball or golf, watching sports, or spending time with friends and family. I also love traveling, getting outdoors, and finding new food spots wherever I go.
             </p>
             <p>
-              Always down to connect.
+              If you’re working on something interesting or just want to chat, feel free to reach out.
             </p>
           </div>
         </div>
